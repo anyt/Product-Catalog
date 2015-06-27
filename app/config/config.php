@@ -13,4 +13,9 @@ $config['mysql'] = array(
     'password' => ''
 );
 
+$config['memcache'] = array(
+    'host' => '127.0.0.1',
+    'port' => 11211
+);
+
 $config['items_per_page'] = 10;

@@ -72,13 +72,23 @@ function get_config($key)
 function mysql_connection()
 {
     static $connection = null;
-    if (!$connection) {
+    if (is_null($connection)) {
         $config = get_config('mysql');
         $connection = mysqli_connect(
             $config['host'],
             $config['user'],
             $config['password'],
             $config['database']) or die ("Connection error.");
+    }
+    return $connection;
+}
+
+function memcache_connection()
+{
+    static $connection = null;
+    if (is_null($connection)) {
+        $config = get_config('memcache');
+        $connection = memcache_connect($config['host'], $config['port']);
     }
     return $connection;
 }

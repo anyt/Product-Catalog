@@ -27,7 +27,11 @@
             <section class="product">
                 <div class="pure-u-1-3">
                     <div class="product-image">
-                        <img class="pure-img" src="<?php print $product['picture_url']; ?>">
+                        <?php if ($product['picture_url']): ?>
+                            <img class="pure-img" src="<?php print $product['picture_url']; ?>">
+                        <?php else: ?>
+                            <img class="pure-img" src="/images/placeholder.png">
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="pure-u-2-3">
