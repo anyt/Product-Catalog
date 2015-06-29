@@ -3,6 +3,7 @@
  * @author Andrey Yatsenco <yatsenco@gmail.com>
  */
 define('BASE_URL', 'http://' . $_SERVER["SERVER_NAME"] . '/');
+define('MEMCACHE_NAMESPACE_PREFIX', 'namespace:');
 
 
 function handle_request()
@@ -24,6 +25,18 @@ function current_uri()
     return $uri;
 }
 
+function get_uri_param($name, $default = null, $allowedValues = array())
+{
+    $value = isset($_GET[$name]) ? $_GET[$name] : null;
+    if (!is_null($value) &&
+        (
+            empty($allowedValues) || !empty($allowedValues) && in_array($value, $allowedValues)
+        )
+    ) {
+        return $value;
+    }
+    return $default;
+}
 
 function get_route_by_uri($uri)
 {
@@ -93,6 +106,20 @@ function memcache_connection()
     return $connection;
 }
 
+function get_cache_namespace($index)
+{
+    $namespace = MEMCACHE_NAMESPACE_PREFIX . $index;
+    $memcache = memcache_connection();
+    $counter = memcache_get($memcache, $namespace);
+    return $index . ':' . $counter;
+}
+
+function update_cache_namespace($index)
+{
+    $namespace = MEMCACHE_NAMESPACE_PREFIX . $index;
+    $memcache = memcache_connection();
+    memcache_increment($memcache, $namespace);
+}
 
 function format_price($price)
 {

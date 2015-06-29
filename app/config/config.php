@@ -10,7 +10,7 @@ $config['mysql'] = array(
     'host' => 'localhost',
     'database' => 'product_catalog',
     'user' => 'root',
-    'password' => ''
+    'password' => '48'
 );
 
 $config['memcache'] = array(
