@@ -12,13 +12,13 @@ $order_by = get_uri_param('order_by', 'id', array('id', 'price'));
 $sort = get_uri_param('sort', 'desc', array('desc', 'asc'));
 
 // get products list
-$products = product_get_paginated($page, $order_by, $sort);
+$products = product_list($page, $order_by, $sort);
 
 //generate next page link
 $items_per_page = get_config('items_per_page');
 if (count($products) === $items_per_page) {
-    $query = array('page' => $page + 1);
-    if ($order_by === 'price') $query['order_by'] = $order_by;
+    $query = $_GET;
+    $query['page'] = $page + 1;
 
     $next_page_link = BASE_URL . '?' . http_build_query($query);
 } else {

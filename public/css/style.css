@@ -1,14 +1,20 @@
+#menu {
+    border-bottom: 1px solid #ccc;
+    background: #eee;
+    margin: 0 -15px;
+}
+
 .content {
     margin: 0 auto;
     padding: 0;
     max-width: 800px;
-    margin-bottom: 50px;
 }
 
 .product {
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .product h2 {
@@ -16,5 +22,54 @@
 }
 
 .product-image {
-    margin: 0 10px 10px;
+    margin: 0 10px 10px 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.pull-right {
+    float: right;
+}
+
+.form-errors {
+    background: pink;
+    border: 1px solid red;
+    padding: 10px 10px 10px 30px;
+}
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+#order-menu .pure-menu-children{
+    width: 100%;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
 }

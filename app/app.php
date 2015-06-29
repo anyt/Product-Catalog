@@ -10,6 +10,9 @@ function handle_request()
 {
     $uri = current_uri();
     $route = get_route_by_uri($uri);
+    if (!$route) {
+        page_not_found();
+    }
     render_controller_by_route($route);
 }
 
@@ -64,6 +67,12 @@ function render_controller_by_route($route)
 
 }
 
+function redirect($url)
+{
+    header('Location: ' . BASE_URL . $url);
+    die();
+}
+
 function render_template($template, $params = array())
 {
     if ($params) extract($params);
@@ -111,17 +120,29 @@ function get_cache_namespace($index)
     $namespace = MEMCACHE_NAMESPACE_PREFIX . $index;
     $memcache = memcache_connection();
     $counter = memcache_get($memcache, $namespace);
+    $counter = $counter ? $counter : 1;
     return $index . ':' . $counter;
 }
 
 function update_cache_namespace($index)
 {
-    $namespace = MEMCACHE_NAMESPACE_PREFIX . $index;
-    $memcache = memcache_connection();
-    memcache_increment($memcache, $namespace);
+    if ($memcache = memcache_connection()) {
+        $namespace = MEMCACHE_NAMESPACE_PREFIX . $index;
+        if (!$counter = memcache_get($memcache, $namespace)) {
+            memcache_set($memcache, $namespace, 1);
+        }
+        memcache_increment($memcache, $namespace);
+    }
 }
 
 function format_price($price)
 {
-    return number_format($price / 10, 2);
+    return number_format($price / 100, 2);
+}
+
+function page_not_found()
+{
+    http_response_code(404);
+    print render_template('404.php');
+    die;
 }

@@ -9,20 +9,16 @@ $config['routes'][] = array(
     'controller' => 'index.php'
 );
 $config['routes'][] = array(
-    'path' => 'admin',
-    'controller' => 'admin/index.php'
+    'path' => 'product\/create',
+    'controller' => 'create.php'
 );
 $config['routes'][] = array(
-    'path' => 'admin\/create',
-    'controller' => 'admin/create.php'
-);
-$config['routes'][] = array(
-    'path' => 'admin\/(\d+)\/edit',
-    'controller' => 'admin/edit.php',
+    'path' => 'product\/(\d+)\/edit',
+    'controller' => 'edit.php',
     'params' => ['id']
 );
 $config['routes'][] = array(
-    'path' => 'admin\/(\d+)\/delete',
-    'controller' => 'admin/delete.php',
+    'path' => 'product\/(\d+)\/delete',
+    'controller' => 'delete.php',
     'params' => ['id']
 );
