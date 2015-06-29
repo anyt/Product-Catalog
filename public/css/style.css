@@ -1,7 +1,9 @@
 #menu {
     border-bottom: 1px solid #ccc;
     background: #eee;
-    margin: 0 -15px;
+}
+#menu .content {
+    max-width: 830px;
 }
 
 .content {
