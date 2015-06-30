@@ -1,1 +1,6 @@
 todo.txt
+public/images/original
+!public/images/original/.geetkeep
+
+public/images/preview
+!public/images/preview/.geetkeep

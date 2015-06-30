@@ -41,7 +41,7 @@
                 <div class="pure-u-1-3">
                     <div class="product-image">
                         <?php if ($product['picture_url']): ?>
-                            <img class="pure-img" src="<?php print $product['picture_url']; ?>">
+                            <img class="pure-img" src="/images/preview/<?php print $product['picture_filename']; ?>">
                         <?php else: ?>
                             <img class="pure-img" src="/images/placeholder.png">
                         <?php endif; ?>

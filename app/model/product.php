@@ -2,6 +2,7 @@
 /**
  * @author Andrey Yatsenco <yatsenco@gmail.com>
  */
+require_once(APPLICATION_ROOT . '/app/model/image.php');
 
 define('PRODUCT_CACHE_NAMESPACE', 'product_index');
 
@@ -11,12 +12,19 @@ function product_fields_list()
         'title',
         'description',
         'price',
-        'picture_url'
+        'picture_url',
+        'picture_filename',
     );
 }
 
 function product_load($id)
 {
+    static $products = array();
+    // if image checked before, get cached info from array
+    if (in_array($id, array_keys($products))) {
+        return $products[$id];
+    }
+
     $id = intval($id);
     $mysql = mysql_connection();
     $res = mysqli_query($mysql, "SELECT * FROM products WHERE id = {$id}");
@@ -31,13 +39,17 @@ function product_load($id)
 
 function product_create($product)
 {
+    // save image file
+    $product['picture_filename'] = image_save($product['picture_url']);
+
     $mysql = mysql_connection();
     foreach ($product as $key => $value) {
         $product[$key] = '"' . mysqli_real_escape_string($mysql, $value) . '"';
     }
     $product = implode(', ', array_values($product));
 
-    $res = mysqli_query($mysql, "INSERT INTO products (title, description, price, picture_url) VALUES ({$product})");
+    // @todo prevent sort order change in $products
+    $res = mysqli_query($mysql, "INSERT INTO products (title, description, price, picture_url, picture_filename) VALUES ({$product})");
     if ($res === false) print mysqli_error($mysql);
     $id = mysqli_insert_id($mysql);
 
@@ -48,6 +60,11 @@ function product_create($product)
 
 function product_update($product)
 {
+    $old_product = product_load($product['id']);
+    // if image is new, save file to disk
+    if ($old_product['picture_url'] !== $product['picture_url']) {
+        $product['picture_filename'] = image_save($product['picture_url']);
+    }
     $mysql = mysql_connection();
     foreach ($product as $key => $value) {
         $product[$key] = '"' . mysqli_real_escape_string($mysql, $value) . '"';
@@ -57,7 +74,8 @@ function product_update($product)
               title={$product['title']},
               description={$product['description']},
               price={$product['price']},
-              picture_url={$product['picture_url']}
+              picture_url={$product['picture_url']},
+              picture_filename={$product['picture_filename']}
             WHERE id={$product['id']}");
     if ($res === false) print mysqli_error($mysql);
 
@@ -99,15 +117,23 @@ function product_validate($product)
 {
     $errors = array();
 
-    // title
+    // title required
     if (empty($product['title'])) $errors[] = 'Title is required.';
-    // description
+    // description required
     if (empty($product['description'])) $errors[] = 'Description is required.';
-    // price
+    // price required
     if (empty($product['price'])) $errors[] = 'Price is required.';
-    // picture_url
+    // picture_url required
     if (empty($product['picture_url'])) $errors[] = 'Picture url is required.';
+    // picture_url valid URL
     if (false === filter_var($product['picture_url'], FILTER_VALIDATE_URL)) $errors[] = 'Picture url is not a valid URL.';
+    // picture_url valid image
+    $file_info = image_get_info_by_url($product['picture_url']);
+    if ($file_info === false) {
+        $errors[] = 'Picture url is not a valid file.';
+    } elseif (false === image_is_allowed_mime_type($file_info['mime'])) {
+        $errors[] = 'Picture url has not supported file type (jpg, png, gif).';
+    }
 
     return $errors;
 }
