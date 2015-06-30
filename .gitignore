@@ -1,6 +1,9 @@
 todo.txt
-public/images/original
-!public/images/original/.geetkeep
 
-public/images/preview
-!public/images/preview/.geetkeep
+/public/images/original/*
+/public/images/preview/*
+
+!public/images/original/.gitkeep
+!public/images/preview/.gitkeep
+
+
