@@ -14,18 +14,6 @@ $sort = get_uri_param('sort', 'desc', array('desc', 'asc'));
 // get products list
 $products = product_list($page, $order_by, $sort);
 
-//generate next page link
-$items_per_page = get_config('items_per_page');
-if (count($products) === $items_per_page) {
-    $query = $_GET;
-    $query['page'] = $page + 1;
-
-    $next_page_link = BASE_URL . '?' . http_build_query($query);
-} else {
-    $next_page_link = false;
-}
-
 return render_template('index.php', array(
-    'products' => $products,
-    'next_page_link' => $next_page_link
+    'products' => $products
 ));

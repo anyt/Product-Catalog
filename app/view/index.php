@@ -67,11 +67,7 @@
         <?php endforeach; ?>
     </div>
     <!--pagination-->
-    <?php if ($next_page_link): ?>
-        <div class="paginator">
-            <a class="pure-button" href="<?php print $next_page_link ?>">Next page ></a>
-        </div>
-    <?php endif; ?>
+    <?php print paginator($products); ?>
 </div>
 </body>
 </html>

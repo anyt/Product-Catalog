@@ -146,3 +146,34 @@ function page_not_found()
     print render_template('404.php');
     die;
 }
+
+function paginator($items)
+{
+    $page = intval(get_uri_param('page', 1));
+
+    $uri = current_uri();
+    $items_per_page = get_config('items_per_page');
+    $query = $_GET;
+    // next page link
+    if (count($items) === $items_per_page) {
+        $query['page'] = $page + 1;
+        $next_page_link = $uri . '?' . http_build_query($query);
+    } else {
+        $next_page_link = false;
+    }
+
+    // previous page link
+    if ($page > 1) {
+        $query['page'] = $page - 1;
+        $previous_page_link = $uri . '?' . http_build_query($query);
+    } else {
+        $previous_page_link = false;
+    }
+    if (false === $next_page_link && false === $previous_page_link) {
+        return '';
+    }
+    return render_template('include/paginator.php', array(
+        'next_link' => $next_page_link,
+        'previous_link' => $previous_page_link
+    ));
+}
