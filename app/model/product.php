@@ -4,8 +4,16 @@
  */
 require_once(APPLICATION_ROOT . '/app/model/image.php');
 
+/**
+ * Namespace for invalidation the cache of product list
+ */
 define('PRODUCT_CACHE_NAMESPACE', 'product_index');
 
+/**
+ * List of fields in product entity
+ *
+ * @return array
+ */
 function product_fields_list()
 {
     return array(
@@ -17,6 +25,12 @@ function product_fields_list()
     );
 }
 
+/**
+ * Load the product entity from the database
+ *
+ * @param $id
+ * @return array|null
+ */
 function product_load($id)
 {
     static $products = array();
@@ -37,6 +51,12 @@ function product_load($id)
     return $product;
 }
 
+/**
+ * Save new product to the database
+ *
+ * @param $product
+ * @return int
+ */
 function product_create($product)
 {
     // save image file
@@ -58,6 +78,11 @@ function product_create($product)
     return $id;
 }
 
+/**
+ * Persist the updated product entity information to the database
+ *
+ * @param $product
+ */
 function product_update($product)
 {
     $old_product = product_load($product['id']);
@@ -82,6 +107,11 @@ function product_update($product)
     update_cache_namespace(PRODUCT_CACHE_NAMESPACE);
 }
 
+/**
+ * Delete the product form the database
+ *
+ * @param $id
+ */
 function product_delete($id)
 {
     $id = intval($id);
@@ -92,6 +122,11 @@ function product_delete($id)
     update_cache_namespace(PRODUCT_CACHE_NAMESPACE);
 }
 
+/**
+ * Prepare product for saving to the database
+ *
+ * @param $product
+ */
 function product_normalize(&$product)
 {
     $fields = product_fields_list();
@@ -104,6 +139,11 @@ function product_normalize(&$product)
     $product['price'] = intval(str_replace(',', '', $product['price']) * 100);
 }
 
+/**
+ * Prepare product data fetched from database to rendering
+ *
+ * @param $product
+ */
 function product_denormalize(&$product)
 {
     if ($product['price'] === 0) {
@@ -113,6 +153,12 @@ function product_denormalize(&$product)
     }
 }
 
+/**
+ * Validate the product and return an array with errors if so.
+ *
+ * @param $product
+ * @return array
+ */
 function product_validate($product)
 {
     $errors = array();
@@ -139,6 +185,14 @@ function product_validate($product)
 }
 
 
+/**
+ * Get paginated products list
+ *
+ * @param int $page
+ * @param string $order_by
+ * @param string $sort
+ * @return array
+ */
 function product_list($page, $order_by, $sort)
 {
     $items_per_page = get_config('items_per_page');

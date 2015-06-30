@@ -2,10 +2,22 @@
 /**
  * @author Andrey Yatsenco <yatsenco@gmail.com>
  */
+
+
+/**
+ * Project URL
+ */
 define('BASE_URL', 'http://' . $_SERVER["SERVER_NAME"] . '/');
+
+/**
+ * Memcache prefix, used for cache invalidation
+ */
 define('MEMCACHE_NAMESPACE_PREFIX', 'namespace:');
 
 
+/**
+ * Match the controller by route and render it's content
+ */
 function handle_request()
 {
     $uri = current_uri();
@@ -16,6 +28,11 @@ function handle_request()
     render_controller_by_route($route);
 }
 
+/**
+ * Current page URI
+ *
+ * @return string
+ */
 function current_uri()
 {
     static $uri = null;
@@ -28,6 +45,14 @@ function current_uri()
     return $uri;
 }
 
+/**
+ * Safely get $_GET parameter
+ *
+ * @param string $name
+ * @param string $default
+ * @param array $allowedValues
+ * @return null|string
+ */
 function get_uri_param($name, $default = null, $allowedValues = array())
 {
     $value = isset($_GET[$name]) ? $_GET[$name] : null;
@@ -41,6 +66,12 @@ function get_uri_param($name, $default = null, $allowedValues = array())
     return $default;
 }
 
+/**
+ * Match configured route with URI
+ *
+ * @param string $uri
+ * @return false|array
+ */
 function get_route_by_uri($uri)
 {
     $routes = get_config('routes');
@@ -58,6 +89,11 @@ function get_route_by_uri($uri)
     return false;
 }
 
+/**
+ * Render controller with parameters by route
+ *
+ * @param $route
+ */
 function render_controller_by_route($route)
 {
     if (isset($route['params'])) {
@@ -67,12 +103,24 @@ function render_controller_by_route($route)
 
 }
 
+/**
+ * Redirect to URL
+ *
+ * @param $url
+ */
 function redirect($url)
 {
     header('Location: ' . BASE_URL . $url);
     die();
 }
 
+/**
+ * Render template from app/view folder with parameters
+ *
+ * @param string $template
+ * @param array $params
+ * @return string
+ */
 function render_template($template, $params = array())
 {
     if ($params) extract($params);
@@ -82,6 +130,12 @@ function render_template($template, $params = array())
     return ob_get_clean();
 }
 
+/**
+ * Get config section by key
+ *
+ * @param string $key
+ * @return null|array
+ */
 function get_config($key)
 {
     static $config = array();
@@ -91,6 +145,11 @@ function get_config($key)
     return isset($config[$key]) ? $config[$key] : null;
 }
 
+/**
+ * Get mysqli connection
+ *
+ * @return mysqli
+ */
 function mysql_connection()
 {
     static $connection = null;
@@ -105,6 +164,9 @@ function mysql_connection()
     return $connection;
 }
 
+/**
+ * Get memcached connection
+ */
 function memcache_connection()
 {
     static $connection = null;
@@ -115,6 +177,12 @@ function memcache_connection()
     return $connection;
 }
 
+/**
+ *  Get cache namespace by index
+ *
+ * @param string $index
+ * @return string
+ */
 function get_cache_namespace($index)
 {
     $namespace = MEMCACHE_NAMESPACE_PREFIX . $index;
@@ -124,6 +192,11 @@ function get_cache_namespace($index)
     return $index . ':' . $counter;
 }
 
+/**
+ * Increment cache namespace value for cache invalidation
+ *
+ * @param $index
+ */
 function update_cache_namespace($index)
 {
     if ($memcache = memcache_connection()) {
@@ -135,11 +208,20 @@ function update_cache_namespace($index)
     }
 }
 
+/**
+ * Convert price from cents to dollars
+ *
+ * @param $price
+ * @return string
+ */
 function format_price($price)
 {
     return number_format($price / 100, 2);
 }
 
+/**
+ * Display 404 page
+ */
 function page_not_found()
 {
     http_response_code(404);
@@ -147,6 +229,12 @@ function page_not_found()
     die;
 }
 
+/**
+ * Render next and previous page links based on items count
+ *
+ * @param array $items
+ * @return string
+ */
 function paginator($items)
 {
     $page = intval(get_uri_param('page', 1));
