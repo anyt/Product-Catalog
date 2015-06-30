@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<?php include('../app/view/include/menu.php'); ?>
+<?php include('include/header.php'); ?>
 
 <div class="content">
     <h1>404</h1>
@@ -20,5 +20,6 @@
 <div class="content">
             <h2>Page not found.</h2>
 </div>
+<?php include('include/footer.php'); ?>
 </body>
 </html>

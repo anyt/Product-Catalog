@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<?php include('include/menu.php'); ?>
+<?php include('include/header.php'); ?>
 <div class="content">
     <div class="pure-menu pull-right">
         <ul id="order-menu" class="pure-menu-list pure-menu-horizontal">
@@ -69,5 +69,7 @@
     <!--pagination-->
     <?php print paginator($products); ?>
 </div>
+
+<?php include('include/footer.php'); ?>
 </body>
 </html>

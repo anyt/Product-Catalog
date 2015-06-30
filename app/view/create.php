@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<?php include('include/menu.php'); ?>
+<?php include('include/header.php'); ?>
 
 <div class="content">
     <h1>Create product</h1>

@@ -2,6 +2,7 @@
     border-bottom: 1px solid #ccc;
     background: #eee;
 }
+
 #menu .content {
     max-width: 830px;
 }
@@ -66,11 +67,11 @@
     background: rgb(66, 184, 221); /* this is a light blue */
 }
 
-#order-menu .pure-menu-children{
+#order-menu .pure-menu-children {
     width: 100%;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
@@ -87,6 +88,27 @@
 .paginator-next {
     float: right;
 }
+
 .paginator-previous {
     float: left;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 101px;
+}
+
+#footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 10px 0 15px;
+    height: 51px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
 }
