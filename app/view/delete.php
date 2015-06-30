@@ -24,5 +24,6 @@
         <a class="pure-button" href="/">Cancel</a>
     </form>
 </div>
+<?php include('include/footer.php'); ?>
 </body>
 </html>
